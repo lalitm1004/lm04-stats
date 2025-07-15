@@ -1,0 +1,11 @@
+node_modules
+/target
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Database
+stats.db
+*.db

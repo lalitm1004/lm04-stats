@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("PRISMA_DATABASE_URL")
+}
+
+model SpotifyToken {
+  id           Int       @id @default(autoincrement())
+  accessToken  String    @map("access_token")
+  refreshToken String    @map("refresh_token")
+  scope        String?
+  expiresAt    DateTime? @map("expires_at")
+  updatedAt    DateTime? @map("updated_at")
+
+  @@map("spotify_token")
+}
