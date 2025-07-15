@@ -5,6 +5,7 @@ pub struct EnvConfig {
     pub database_url: String,
     pub spotify_client_id: String,
     pub spotify_client_secret: String,
+    pub api_access_key: String,
 }
 
 pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(|| {
@@ -17,5 +18,7 @@ pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(|| {
 
         spotify_client_secret: env::var("SPOTIFY_CLIENT_SECRET")
             .expect("SPOTIFY_CLIENT_SECRET is not set"),
+
+        api_access_key: env::var("API_ACCESS_KEY").expect("API_ACCESS_KEY is not set"),
     }
 });

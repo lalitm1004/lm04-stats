@@ -6,5 +6,7 @@ pub use config::ENV_CONFIG;
 
 pub mod models;
 
+mod middleware;
+
 mod state;
 pub use state::{AppState, create_db_pool};

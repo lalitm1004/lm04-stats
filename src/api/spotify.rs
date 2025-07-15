@@ -3,7 +3,7 @@ use poem_openapi::{ApiResponse, Object, OpenApi, payload::Json};
 use serde::{Deserialize, Serialize};
 
 use super::{ApiTags, ErrorResponse};
-use crate::{AppState, models::SpotifyToken};
+use crate::{AppState, middleware::ApiAuth, models::SpotifyToken};
 
 #[derive(Debug, Serialize, Deserialize, Object)]
 pub struct TrackDetails {
@@ -64,7 +64,11 @@ impl SpotifyApi {
     const SPOTIFY_API_BASE_URL: &'static str = "https://api.spotify.com/v1";
 
     #[oai(path = "/api/spotify/track-widget", method = "get")]
-    async fn get_currently_playing(&self, state: Data<&AppState>) -> Result<TrackWidgetResponse> {
+    async fn get_currently_playing(
+        &self,
+        state: Data<&AppState>,
+        _api_access_key: ApiAuth,
+    ) -> Result<TrackWidgetResponse> {
         let token = match SpotifyToken::get_valid_access_token(&*state.db).await {
             Ok(token) => token,
             Err(e) => {
