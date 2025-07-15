@@ -15,11 +15,21 @@ async fn main() -> ExitCode {
         OpenApiService::new(SpotifyApi, "lm04-stats", "1.0").server("http://localhost:3000");
     let ui = api_service.swagger_ui();
 
+    let cors = Cors::new().allow_origins_fn(|origin: &str| {
+        let origin = origin.to_ascii_lowercase();
+
+        if origin.ends_with(".lm04.me") || origin == "https://lm04.me" {
+            return true;
+        }
+
+        false
+    });
+
     let app = Route::new()
         .nest("/", api_service)
         .nest("/docs", ui)
         .data(state)
-        .with(Cors::new());
+        .with(cors);
 
     let _ = Server::new(TcpListener::bind("127.0.0.1:3000"))
         .run(app)
